@@ -29,8 +29,8 @@ function manejarCalculo(event) {
     const volumenBebida = parseInt(formulario.drinkVolume.value);
     const nivelAlcohol = parseInt(formulario.alcoholLevel.value);
 
-    if (nivelAlcohol < 0 || nivelAlcohol > 100) {
-        mostrarResultado('El grado de alcohol debe estar entre 0 y 100');
+    if (nivelAlcohol < 0 || nivelAlcohol > 115 ) {
+        mostrarResultado('El grado de alcohol debe estar entre 0 y 115');
         return;
     }
 
