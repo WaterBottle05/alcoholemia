@@ -1,104 +1,78 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Formulario de Información</title>
+    <title>Control de Alcohol en Sangre</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="main.js"></script>
 </head>
 <body>
-    <h2>Información del Usuario</h2>
-    <form action="#" method="post" onsubmit="calcularAlcoholemia(); return false;">
-        <label for="peso">Peso (kg):</label>
-        <input type="number" id="peso" name="peso" required><br>
-
-        <label for="sexo">Sexo:</label>
-        <select id="sexo" name="sexo" required>
-            <option value="masculino">Masculino</option>
-            <option value="femenino">Femenino</option>
-        </select><br>
-
-        <label for="bebida">Bebida:</label>
-        <select id="bebida" name="bebida" onchange="rellenarCamposBebida();" required>
-            <option value="cerveza">Cerveza</option>
-            <option value="vino">Vino</option>
-            <option value="licor">Licor</option>
-            <!-- Agrega más opciones según sea necesario -->
-        </select><br>
-
-        <label for="tipoCuerpo">Tipo de cuerpo:</label>
-        <select id="tipoCuerpo" name="tipoCuerpo" required>
-            <option value="picnico">Picnico</option>
-            <option value="astenico">Astenico</option>
-            <!-- Agrega más opciones según sea necesario -->
-        </select><br>
-
-        <label for="tiempo">Tiempo desde la ingestión (horas):</label>
-        <input type="number" id="tiempo" name="tiempo" required><br>
-
-        <input type="submit" value="Calcular Alcoholemia">
-
-        <!-- Sección para mostrar el estado/consecuencias -->
-        <div id="consecuencias"></div>
-
-    </form>
-
-    <script>
-        function rellenarCamposBebida() {
-            var bebidaSeleccionada = document.getElementById("bebida").value;
-
-            // Definir porcentajes de alcohol y consumición estándar por tipo de bebida
-            var porcentajeAlcohol = 0;
-            var consumicionEstandar = 0;
-
-            switch (bebidaSeleccionada) {
-                case "cerveza":
-                    porcentajeAlcohol = 5; // Porcentaje de alcohol en cerveza
-                    consumicionEstandar = 355; // Consumición estándar en ml para cerveza
-                    break;
-                case "vino":
-                    porcentajeAlcohol = 12; // Porcentaje de alcohol en vino
-                    consumicionEstandar = 148; // Consumición estándar en ml para vino
-                    break;
-                case "licor":
-                    porcentajeAlcohol = 40; // Porcentaje de alcohol en licor
-                    consumicionEstandar = 44; // Consumición estándar en ml para licor
-                    break;
-                // Agrega más casos según sea necesario
-            }
-
-            // Asignar los valores a los campos correspondientes
-            document.getElementById("porcentajeAlcohol").value = porcentajeAlcohol;
-            document.getElementById("consumicionEstandar").value = consumicionEstandar;
-        }
-
-        function calcularAlcoholemia() {
-            // Obtener valores del formulario
-            var peso = document.getElementById("peso").value;
-            var porcentajeAlcohol = document.getElementById("porcentajeAlcohol").value;
-            var tipoCuerpo = document.getElementById("tipoCuerpo").value;
-            var tiempo = document.getElementById("tiempo").value;
-
-            // Validar que los valores no sean negativos
-            if (peso < 0 || porcentajeAlcohol < 0 || tiempo < 0) {
-                alert("Por favor, ingrese valores no negativos.");
-                return;
-            }
-
-            // Calcular volumen de bebida ingerido (ml)
-            var volumen = (document.getElementById("consumicionEstandar").value) ? document.getElementById("consumicionEstandar").value : 0;
-
-            // Fórmula de ejemplo para calcular la alcoholemia con eliminación por tiempo
-            var alcoholemia = (volumen * porcentajeAlcohol) / (peso * 1000) * 100 - (0.15 * tiempo);
-
-            // Asegurarse de que la alcoholemia no sea negativa
-            alcoholemia = Math.max(alcoholemia, 0);
-
-            // Mostrar el resultado en un alert
-            alert("La alcoholemia calculada es: " + alcoholemia.toFixed(2) + "%");
-
-            // Determinar el estado/consecuencias y mostrar en la página
-            var estado = obtenerEstadoAlcoholemia(alcoholemia);
-            document.getElementById("consecuencias").innerHTML = "<p>Estado: " + estado + "</p>";
-        }
-
-        function obtenerEstadoAlcoholemia(alcoholemia)
+    <div class="container">
+      <form class="user-form" id="alcoholCheckForm">
+        <div class="form-details">
+          <div class="user-data">
+            <h1>Calculadora de Alcohol en Sangre</h1>
+            <h2>Información del Usuario:</h2>
+            <div class="gender">
+              <h4 class="gender-label">Género:</h4>        
+              <input type="radio" id="genderMale" name="gender" value="male" style="cursor: pointer;">
+              <label for="genderMale">Masculino</label>
+              
+              <input type="radio" id="genderFemale" name="gender" value="female" style="cursor: pointer;">
+              <label for="genderFemale">Femenino</label>
+            </div>
+            
+            <div class="body">
+              <h4 class="weight-label">Peso:</h4>
+              <input type="text" id="userWeight" name="userWeight" placeholder="Peso en kg..." class="input-field">
+            </div>
+            
+            <div class="body">
+              <h3 class="bodyType-label">Tipo de Cuerpo:</h3>
+              <select id="bodyType" name="bodyTypeSelect" class="input-field">
+                <option value="empty" disabled selected>Selecciona un tipo...</option>
+                <option value="thin">Delgado y alto</option>
+                <option value="muscular">Musculoso y atlético</option>
+                <option value="rounded">Redondeado y robusto</option>
+                <option value="average">Promedio</option>
+              </select>
+            </div>
+          </div>
+          <div class="consumption">
+            <h2>Bebida Consumida:</h2>
+            <div class="drink-selection">
+              <select id="drinkChoice" name="drinkChoice" class="input-field">
+                <option     disabled selected >Elige una opcion...</option>
+                <option>Tequila</option>
+                <option>Cerveza</option>
+                <option>Vino</option>
+                <option>Hidromiel</option>
+                <option>Sidra</option>
+                <option>Whisky</option>
+              </select>
+              <input type="text" name="timeSinceLastDrink" class="input-field" placeholder="Horas desde la última bebida">
+            </div>
+            <div class="body">
+              <label class="alcohol-label">Graduación Alcohólica (%):</label>
+              <input type="text" id="alcoholLevel" name="alcoholLevel" class="input-field">
+            </div>
+            
+            <div class="body">
+              <label class="volume-label">Volumen Consumido (ml):</label>
+              <input type="text" id="drinkVolume" name="drinkVolume" class="input-field">
+            </div>
+          </div>
+        </div>
+        <div class="submit-btn">
+          <button type="submit" class="btn" id="calculateBtn">Calcular</button>
+        </div>
+      </form>
+      <div>
+        <h2 class="results-label">Resultados:</h2>
+        <div id="resultsContainer" class="results-info"></div>
+      </div>
+    </div>
+  </body>
+  </html>
