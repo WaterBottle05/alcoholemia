@@ -17,8 +17,13 @@
             <option value="femenino">Femenino</option>
         </select><br>
 
-        <label for="volumen">Volumen de bebida ingerido (ml):</label>
-        <input type="number" id="volumen" name="volumen" required><br>
+        <label for="bebida">Bebida:</label>
+        <select id="bebida" name="bebida" onchange="rellenarCamposBebida();" required>
+            <option value="cerveza">Cerveza</option>
+            <option value="vino">Vino</option>
+            <option value="licor">Licor</option>
+            <!-- Agrega más opciones según sea necesario -->
+        </select><br>
 
         <label for="tipoCuerpo">Tipo de cuerpo:</label>
         <select id="tipoCuerpo" name="tipoCuerpo" required>
@@ -27,26 +32,73 @@
             <!-- Agrega más opciones según sea necesario -->
         </select><br>
 
-        <label for="tiempo">Tiempo desde la ingestión (minutos):</label>
+        <label for="tiempo">Tiempo desde la ingestión (horas):</label>
         <input type="number" id="tiempo" name="tiempo" required><br>
 
         <input type="submit" value="Calcular Alcoholemia">
+
+        <!-- Sección para mostrar el estado/consecuencias -->
+        <div id="consecuencias"></div>
+
     </form>
 
     <script>
+        function rellenarCamposBebida() {
+            var bebidaSeleccionada = document.getElementById("bebida").value;
+
+            // Definir porcentajes de alcohol y consumición estándar por tipo de bebida
+            var porcentajeAlcohol = 0;
+            var consumicionEstandar = 0;
+
+            switch (bebidaSeleccionada) {
+                case "cerveza":
+                    porcentajeAlcohol = 5; // Porcentaje de alcohol en cerveza
+                    consumicionEstandar = 355; // Consumición estándar en ml para cerveza
+                    break;
+                case "vino":
+                    porcentajeAlcohol = 12; // Porcentaje de alcohol en vino
+                    consumicionEstandar = 148; // Consumición estándar en ml para vino
+                    break;
+                case "licor":
+                    porcentajeAlcohol = 40; // Porcentaje de alcohol en licor
+                    consumicionEstandar = 44; // Consumición estándar en ml para licor
+                    break;
+                // Agrega más casos según sea necesario
+            }
+
+            // Asignar los valores a los campos correspondientes
+            document.getElementById("porcentajeAlcohol").value = porcentajeAlcohol;
+            document.getElementById("consumicionEstandar").value = consumicionEstandar;
+        }
+
         function calcularAlcoholemia() {
             // Obtener valores del formulario
             var peso = document.getElementById("peso").value;
-            var volumen = document.getElementById("volumen").value;
+            var porcentajeAlcohol = document.getElementById("porcentajeAlcohol").value;
             var tipoCuerpo = document.getElementById("tipoCuerpo").value;
             var tiempo = document.getElementById("tiempo").value;
 
-            // Realizar el cálculo de alcoholemia (fórmula de ejemplo)
-            var alcoholemia = (volumen * 0.8) / (peso * 1000) * 100; // Fórmula de ejemplo, ajusta según necesites
+            // Validar que los valores no sean negativos
+            if (peso < 0 || porcentajeAlcohol < 0 || tiempo < 0) {
+                alert("Por favor, ingrese valores no negativos.");
+                return;
+            }
+
+            // Calcular volumen de bebida ingerido (ml)
+            var volumen = (document.getElementById("consumicionEstandar").value) ? document.getElementById("consumicionEstandar").value : 0;
+
+            // Fórmula de ejemplo para calcular la alcoholemia con eliminación por tiempo
+            var alcoholemia = (volumen * porcentajeAlcohol) / (peso * 1000) * 100 - (0.15 * tiempo);
+
+            // Asegurarse de que la alcoholemia no sea negativa
+            alcoholemia = Math.max(alcoholemia, 0);
 
             // Mostrar el resultado en un alert
             alert("La alcoholemia calculada es: " + alcoholemia.toFixed(2) + "%");
+
+            // Determinar el estado/consecuencias y mostrar en la página
+            var estado = obtenerEstadoAlcoholemia(alcoholemia);
+            document.getElementById("consecuencias").innerHTML = "<p>Estado: " + estado + "</p>";
         }
-    </script>
-</body>
-</html>
+
+        function obtenerEstadoAlcoholemia(alcoholemia)
