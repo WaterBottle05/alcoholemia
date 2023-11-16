@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Información</title>
+</head>
+<body>
+    <h2>Información del Usuario</h2>
+    <form action="#" method="post" onsubmit="calcularAlcoholemia(); return false;">
+        <label for="peso">Peso (kg):</label>
+        <input type="number" id="peso" name="peso" required><br>
+
+        <label for="sexo">Sexo:</label>
+        <select id="sexo" name="sexo" required>
+            <option value="masculino">Masculino</option>
+            <option value="femenino">Femenino</option>
+        </select><br>
+
+        <label for="volumen">Volumen de bebida ingerido (ml):</label>
+        <input type="number" id="volumen" name="volumen" required><br>
+
+        <label for="tipoCuerpo">Tipo de cuerpo:</label>
+        <select id="tipoCuerpo" name="tipoCuerpo" required>
+            <option value="picnico">Picnico</option>
+            <option value="astenico">Astenico</option>
+            <!-- Agrega más opciones según sea necesario -->
+        </select><br>
+
+        <label for="tiempo">Tiempo desde la ingestión (minutos):</label>
+        <input type="number" id="tiempo" name="tiempo" required><br>
+
+        <input type="submit" value="Calcular Alcoholemia">
+    </form>
+
+    <script>
+        function calcularAlcoholemia() {
+            // Obtener valores del formulario
+            var peso = document.getElementById("peso").value;
+            var volumen = document.getElementById("volumen").value;
+            var tipoCuerpo = document.getElementById("tipoCuerpo").value;
+            var tiempo = document.getElementById("tiempo").value;
+
+            // Realizar el cálculo de alcoholemia (fórmula de ejemplo)
+            var alcoholemia = (volumen * 0.8) / (peso * 1000) * 100; // Fórmula de ejemplo, ajusta según necesites
+
+            // Mostrar el resultado en un alert
+            alert("La alcoholemia calculada es: " + alcoholemia.toFixed(2) + "%");
+        }
+    </script>
+</body>
+</html>
